@@ -19,7 +19,7 @@ Make sure you have Python 3 installed.
 Clone or download this repository.
 
 Run the program:
-python bank_account_manager.py
+python bank_accountNEW.py
 Follow on-screen prompts to login and perform account actions.
 
 How to Add Accounts
