@@ -2,14 +2,13 @@ import os
 
 
 class BankAccount():
-    def __init__(self, username, _pin, _balance):
+    def __init__(self, username, _pin, _balance, status='unblocked'):
         self.username = username
         self._pin = _pin
         self._balance = _balance
+        self.status = status
     def check_balance(self):
         print(f'You have ${self._balance} to your name.')
-
-
     def deposit(self):
         print('Enter the amount you want to deposit: ')
         try:
@@ -46,18 +45,32 @@ def clear():
 
 def login():
         try:
+            max_pin_attempt = 3
+            current_pin_attempt = 0
             while True:
                 print('Enter your username: ')
                 username_input = input('> ')
-                _pin_input = int(input('Enter your _pin: '))
-                if username_input in accounts and _pin_input == accounts[username_input]._pin :
-                    print('Login successfull!')
-                    account = accounts[username_input]
-                    return account
+                if username_input in accounts:
+                    pin_input = int(input('Enter your pin: '))
+                    if username_input in accounts and pin_input == accounts[username_input]._pin :
+                        if accounts[username_input].status == 'unblocked':
+                            print('Login successfull!')
+                            return accounts[username_input]
+                        else:
+                            accounts[username_input].status = 'blocked'
+                            print('Your account is blocked! Please contact your bank.')
+                            break
+                    elif pin_input != accounts[username_input]._pin:
+                        current_pin_attempt += 1
+                        print(f'Wrong PIN, (remaining attempts: {max_pin_attempt - current_pin_attempt})')
+                        if current_pin_attempt >= max_pin_attempt:
+                            print('Your account is blocked! Please contact your bank.')
+                            break
                 else:
-                    print('Wrong credentials, try again!')
+                    print('That username does not exist.')
+                    break
         except ValueError:
-            print('Please enter letters for your username and numbers for your _pin')
+            print('Please enter letters for your username and numbers for your pin')
         
 def mainlogic():
     print('Welcome to your bank account manager. Type "login" to log in your account.')
