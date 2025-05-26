@@ -15,6 +15,8 @@ class BankAccount:
             deposit_amount = float(input('> '))
             if deposit_amount < 0:
                 print('You cannot deposit a negative amount of money!')
+            elif deposit_amount == 0:
+                print('You cannot deposit "0".')
             else:
                 self._balance += deposit_amount
                 print('Deposit successfull!')
@@ -31,6 +33,8 @@ class BankAccount:
                 print('You cannot withdraw an amount more than your balance!')
             elif withdraw_amount < 0:
                 print('You cannot withdraw a negative amount of money!')
+            elif withdraw_amount == 0:
+                print('You cannot withdraw "0".')
             else:
                 self._balance -= withdraw_amount
                 print('Withdraw successfull!')
@@ -99,7 +103,7 @@ def account_actions(account):
     show_help_commands()
     account.check_balance()
     while True:
-        print('1-Check _balance 2-Deposit 3-Withdraw 0-quit')
+        print('1-Check balance 2-Deposit 3-Withdraw 0-quit')
         try:
             account_input = int(input('> '))
             if account_input == 1:
