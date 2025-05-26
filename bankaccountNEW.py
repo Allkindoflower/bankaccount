@@ -1,5 +1,5 @@
 import os
-
+import time
 
 class BankAccount:
     def __init__(self, username, _pin, _balance, status='unblocked'):
@@ -83,6 +83,8 @@ def mainlogic():
                 account_actions(account)
         elif user_command == 'exit' or user_command == 'quit':
             clear()
+            time.sleep(2)
+            print('Signing off...')
             quit()
         elif user_command == 'help':
             clear()
