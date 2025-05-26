@@ -1,7 +1,7 @@
 import os
 
 
-class BankAccount():
+class BankAccount:
     def __init__(self, username, _pin, _balance, status='unblocked'):
         self.username = username
         self._pin = _pin
@@ -84,7 +84,7 @@ def mainlogic():
         elif user_command == 'exit' or user_command == 'quit':
             clear()
             quit()
-        elif user_command == 'show_help_commands':
+        elif user_command == 'help':
             clear()
             show_help_commands()
         elif user_command == 'clear':
