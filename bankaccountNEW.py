@@ -1,34 +1,37 @@
 import os
 import time
+from decimal import Decimal, InvalidOperation
 
 class BankAccount:
     def __init__(self, username, _pin, _balance, status='unblocked'):
         self.username = username
         self._pin = _pin
-        self._balance = _balance
+        self._balance = Decimal(_balance)
         self.status = status
+
     def check_balance(self):
-        print(f'You have ${self._balance} to your name.')
+        print(f'You have ${self._balance:.2f} to your name.')
+
     def deposit(self):
         print('Enter the amount you want to deposit: ')
         try:
-            deposit_amount = float(input('> '))
+            deposit_amount = Decimal(input('> '))
             if deposit_amount < 0:
                 print('You cannot deposit a negative amount of money!')
             elif deposit_amount == 0:
                 print('You cannot deposit "0".')
             else:
                 self._balance += deposit_amount
-                print('Deposit successfull!')
+                print('Deposit successful!')
                 self.check_balance()
-        except ValueError:
+        except (ValueError, InvalidOperation):
             print('Please enter a valid number!')
 
-
+        
     def withdraw(self):
         print('Enter the amount you want to withdraw: ')
         try:
-            withdraw_amount = float(input('> '))
+            withdraw_amount = Decimal(input('> '))
             if withdraw_amount > self._balance:
                 print('You cannot withdraw an amount more than your balance!')
             elif withdraw_amount < 0:
@@ -37,54 +40,73 @@ class BankAccount:
                 print('You cannot withdraw "0".')
             else:
                 self._balance -= withdraw_amount
-                print('Withdraw successfull!')
+                print('Withdraw successful!')
                 self.check_balance()
-        except ValueError:
+        except (ValueError, InvalidOperation):
             print('Please enter a valid number!')
 
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def username_auth():
+    max_username_attempt = 3
+    current_username_attempt = 0
+    print('Enter your username: ')
+    while True:
+        if current_username_attempt >= max_username_attempt:
+            print('Too many wrong attempts! Try again later')
+            break
+            #lock attempts for some time logic here
+        else:
+            username_input = input('> ').strip().lower()
+            if username_input in accounts:
+                return username_input
+            else:
+                print('That username does not exist, try something else.')
+                current_username_attempt += 1
 
-def login():
+def pin_auth(username_input):
+    max_pin_attempt = 3
+    current_pin_attempt = 0
+    while True:
         try:
-            max_pin_attempt = 3
-            current_pin_attempt = 0
-            while True:
-                print('Enter your username: ')
-                username_input = input('> ')
-                if username_input in accounts:
-                    pin_input = int(input('Enter your pin: '))
-                    if username_input in accounts and pin_input == accounts[username_input]._pin :
-                        if accounts[username_input].status == 'unblocked':
-                            print('Login successfull!')
-                            return accounts[username_input]
-                        else:
-                            accounts[username_input].status = 'blocked'
-                            print('Your account is blocked! Please contact your bank.')
-                            break
-                    elif pin_input != accounts[username_input]._pin:
-                        current_pin_attempt += 1
-                        print(f'Wrong PIN, (remaining attempts: {max_pin_attempt - current_pin_attempt})')
-                        if current_pin_attempt >= max_pin_attempt:
-                            print('Your account is blocked! Please contact your bank.')
-                            break
-                else:
-                    print('That username does not exist.')
-                    break
+            pin_input = int(input('Enter your pin: '))
+            if pin_input == accounts[username_input]._pin and accounts[username_input].status == 'unblocked':
+                print('Login successfull!')
+                return accounts[username_input]
+            else:
+                current_pin_attempt += 1
+                print(f'Wrong PIN, (remaining attempts: {max_pin_attempt - current_pin_attempt})')      
+                if current_pin_attempt >= max_pin_attempt:
+                    accounts[username_input].status = 'blocked'
+                    print('Your account has been blocked! Please contact your bank.')
+                    return
         except ValueError:
-            print('Please enter letters for your username and numbers for your pin')
-        
+            print('Please use numbers for your PIN.')
+            
+            
+def login():
+    username = username_auth()
+    if username:
+        account = pin_auth(username)
+        return account
+    else:
+        print('Something went wrong, please try again.')
+
+def accept_login():
+    account = login()
+    if account:
+        account_actions(account)
+    else:
+        print('Login failed or account blocked.')
+
 def mainlogic():
     print('Welcome to your bank account manager. Type "login" to log in your account.')
     while True:
         user_command = input('> ').strip().lower()
         if user_command == 'login':
-            clear()
-            account = login()
-            if account:
-                account_actions(account)
+            accept_login()
         elif user_command == 'exit' or user_command == 'quit':
             clear()
             time.sleep(2)
@@ -118,6 +140,7 @@ def account_actions(account):
             elif account_input == 0:
                 clear()
                 print('Exiting...')
+                print('Welcome to your bank account manager. Type "login" to log in your account.')
                 return
             else:
                 print('Invalid input, please try something else!')
