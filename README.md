@@ -28,7 +28,9 @@ Accounts are stored in the accounts dictionary in the script. To add a new user,
 
 accounts = {
     'johnsmith': BankAccount('johnsmith', 1234, 1000),
-    'janedoe': BankAccount('janedoe', 5678, 500)
 }
+
 License
 This project is for learning purposes and has no license.
+
+Update: made the code more modular by splitting related functions to their own py files
