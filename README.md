@@ -33,4 +33,3 @@ accounts = {
 License
 This project is for learning purposes and has no license.
 
-Update: made the code more modular by splitting related functions to their own py files
