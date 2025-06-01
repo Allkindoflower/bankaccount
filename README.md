@@ -14,13 +14,16 @@ Supports multiple user accounts with independent balances
 Clear screen command for better terminal experience
 
 How to Run
+
 Make sure you have Python 3 installed.
 
 Clone or download this repository.
 
 Run the program:
-python bank_accountNEW.py
+python imports and running main logic.py
 Follow on-screen prompts to login and perform account actions.
+
+Be careful to have all the files in the same folder
 
 How to Add Accounts
 Accounts are stored in the accounts dictionary in the script. To add a new user, add a new entry like:
