@@ -1,7 +1,7 @@
 #stores action functions
 from auth import login
 from utils import show_help_commands, clear
-
+import time
 
 def account_actions(account):
     show_help_commands()
@@ -19,6 +19,13 @@ def account_actions(account):
             elif account_input == 3:
                 clear()
                 account.withdraw()
+            elif account_input == 'help':
+                clear()
+                show_help_commands
+            elif account_input == 'quit' or account_input == 'exit':
+                print('Exiting... Have a great day!')
+                time.sleep(2)
+                quit()
             elif account_input == 0:
                 clear()
                 print('Exiting...')
